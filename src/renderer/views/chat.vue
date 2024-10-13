@@ -9,9 +9,7 @@
       >
         <template v-if="msg.role === 'user'">{{ msg.content }}</template>
         <template v-if="msg.role === 'assistant'">
-          <div class="markdown">
-            <Markdown :source="msg.content" />
-          </div>
+          <MarkdownRender :source="msg.content"></MarkdownRender>
         </template>
       </div>
     </div>
@@ -35,29 +33,17 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { fetchStream } from '../utils/fetch.util';
 import { generateRandomString } from '../utils/string.util';
-import Markdown from 'vue3-markdown-it';
-import MarkdownIt from 'markdown-it';
-import hljs from 'highlight.js'; // 导入 highlight.js
-import 'highlight.js/styles/github.css'; // 导入代码高亮的样式
+import MarkdownRender from '../components/MarkdownRender.vue';
+
 import ipcHelperUtil from '../utils/ipc-helper.util';
 import Mousetrap from 'mousetrap';
+import { useChatConfig } from '../hooks/config.hook';
 
-const apiKey = ref(import.meta.env.VITE_CHAT_API_KEY);
-const apiBaseUrl = ref(import.meta.env.VITE_CHAT_BASE_URL);
+// const apiKey = ref(import.meta.env.VITE_CHAT_API_KEY);
+// const apiBaseUrl = ref(import.meta.env.VITE_CHAT_BASE_URL);
 
-// 创建 markdown-it 实例并配置 highlight.js
-const markdownParser = new MarkdownIt({
-  highlight: function (str, lang) {
-    if (lang && hljs.getLanguage(lang)) {
-      try {
-        return `<pre class="hljs"><code>${
-          hljs.highlight(str, { language: lang }).value
-        }</code></pre>`;
-      } catch (_) {}
-    }
-    return `<pre class="hljs"><code>${markdownParser.utils.escapeHtml(str)}</code></pre>`;
-  },
-});
+const { currentConfig } = useChatConfig();
+const { apiKey, baseUrl } = currentConfig.value;
 
 // 定义消息类型
 interface Message {
@@ -202,12 +188,12 @@ const fetchBotResponse = async (message: string): Promise<string> => {
     }
   };
   fetchStream(
-    `${apiBaseUrl.value}/v1/chat/completions`,
+    `${baseUrl}/v1/chat/completions`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey.value}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         stream: true,

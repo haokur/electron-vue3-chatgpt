@@ -29,7 +29,8 @@ function listenMainEmit() {
     if (!rendererHandlers) return;
 
     rendererHandlers.forEach(async (rendererHandler: Function) => {
-      const { actionId } = options;
+      // const { actionId } = options;
+      const actionId = options?.actionId;
       const result = await rendererHandler(options);
       if (result) {
         $electron.$emit('replyMain', {

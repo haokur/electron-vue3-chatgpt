@@ -9,6 +9,11 @@ const routes = [
     name: 'Chat',
     component: () => import('../views/chat.vue'),
   },
+  {
+    path: '/chat-setting',
+    name: 'ChatSetting',
+    component: () => import('../views/chat-setting.vue'),
+  },
 ];
 
 const router = createRouter({

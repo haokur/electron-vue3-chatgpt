@@ -30,39 +30,45 @@
 .markdown {
   font-family: 'PingFang SC';
   line-height: 1.6;
-  h3 {
-    margin: 6px 0;
-  }
-  div > * {
+  line-height: 1.8;
+  > p {
     padding: 0 20px;
-  }
-  div > pre {
-    margin: 1em 0;
-    padding: 0;
-    line-height: 1.4;
   }
   ol,
   ul {
     padding-left: 36px;
   }
-  li {
-    margin-bottom: 4px;
-  }
   code {
+    margin: 0 1px;
+    padding: 4px 4px;
     color: #0d0d0d;
     background-color: #ececec;
-    padding: 6px 4px;
     border-radius: 4px;
   }
-  .hljs {
-    padding: 1em 20px;
-    font-family: 'Monaco';
-    background-color: #f6f6f6;
-    scrollbar-width: none;
-    line-height: 1.4;
+  pre code {
+    background-color: transparent;
+  }
+  ol,
+  ul {
+    pre {
+      margin-left: -36px;
+    }
+  }
+  pre {
+    box-sizing: border-box;
+    margin: 8px 0;
+    padding: 16px 20px;
     font-size: 14px;
+    font-family: 'Monaco';
+    line-height: 1.4;
+    background-color: #f6f6f6;
+    overflow-x: scroll;
+    scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none; /* Chrome, Safari, Opera */
     }
+  }
+  h3 {
+    margin: 6px 0;
   }
 }

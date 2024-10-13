@@ -73,7 +73,13 @@ function createWindow() {
   const iconPath = path.join(AppPath, 'static/icons/IconTemplate.png');
   const tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
-    { label: '设置', type: 'radio' },
+    {
+      label: '设置',
+      type: 'normal',
+      click: () => {
+        electronUtil.sendMessage2MainRender('goSettingPage', null, mainWindow);
+      },
+    },
     {
       label: '退出',
       type: 'normal',
