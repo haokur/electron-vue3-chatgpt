@@ -25,19 +25,22 @@
         rows="1"
         placeholder="Type a message..."
         @input="handleQuestionInput"
+        ref="QuestionTextareaRef"
       ></textarea>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { fetchStream } from '../utils/fetch.util';
 import { generateRandomString } from '../utils/string.util';
 import Markdown from 'vue3-markdown-it';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js'; // 导入 highlight.js
 import 'highlight.js/styles/github.css'; // 导入代码高亮的样式
+import ipcHelperUtil from '../utils/ipc-helper.util';
+import Mousetrap from 'mousetrap';
 
 const apiKey = ref(import.meta.env.VITE_CHAT_API_KEY);
 const apiBaseUrl = ref(import.meta.env.VITE_CHAT_BASE_URL);
@@ -98,11 +101,32 @@ const handleChatBoxScroll = () => {
   isAutoScroll.value = scrollTop + clientHeight >= scrollHeight - 50; // 允许50px的误差
 };
 
+let focusOrBlurRemover: null | Function = null;
+const QuestionTextareaRef = ref();
 onMounted(() => {
   const cache = localStorage.getItem('messages');
   if (cache) {
     messages.value = JSON.parse(cache);
   }
+
+  // 监听窗体窗口事件
+  focusOrBlurRemover = ipcHelperUtil.addMainEventListener('winFocusOrBlur', (ev) => {
+    if (ev.blur) {
+      QuestionTextareaRef.value?.blur();
+    } else if (ev.focus) {
+      QuestionTextareaRef.value?.focus();
+    }
+  });
+
+  Mousetrap.bind('command+n', () => {
+    console.log('新增话题', 'chat.vue::123行');
+    messages.value = [];
+    QuestionTextareaRef.value?.focus();
+  });
+});
+
+onBeforeUnmount(() => {
+  focusOrBlurRemover && focusOrBlurRemover();
 });
 
 // 用户输入

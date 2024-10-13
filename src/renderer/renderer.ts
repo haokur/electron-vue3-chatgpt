@@ -9,7 +9,8 @@ import router from './routers/router';
 import ipcHelperUtil from './utils/ipc-helper.util';
 import { bindKeyboardEvent } from './events/keyboard.handler';
 
-import "./styles/basic.scss"
+import './styles/basic.scss';
+import { injectGlobalMainEventListener } from './events/event-handler';
 
 const app = createApp(App);
 app.use(router).use(ElementPlus, {
@@ -17,6 +18,7 @@ app.use(router).use(ElementPlus, {
 });
 
 ipcHelperUtil.listenMainEmit();
+injectGlobalMainEventListener();
 bindKeyboardEvent();
 
 app.mount('#app');

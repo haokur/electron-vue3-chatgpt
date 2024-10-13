@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import * as rendererEventHandlers from '../events/event-handler';
+
+const MainEventListenerMap = {};
 
 const listenerMap = {};
 let isInitFlag = false;
@@ -24,17 +25,39 @@ function _listenMainReply() {
 // 监听main主动发送的消息
 function listenMainEmit() {
   $electron.$on('fromMain', async (_, action, options) => {
-    const rendererHandler = rendererEventHandlers[action];
-    if (!rendererHandler) return;
+    const rendererHandlers = MainEventListenerMap[action];
+    if (!rendererHandlers) return;
 
-    const { actionId } = options;
-    const result = await rendererHandler(options);
-    $electron.$emit('replyMain', {
-      action,
-      actionId,
-      result,
+    rendererHandlers.forEach(async (rendererHandler: Function) => {
+      const { actionId } = options;
+      const result = await rendererHandler(options);
+      if (result) {
+        $electron.$emit('replyMain', {
+          action,
+          actionId,
+          result,
+        });
+      }
     });
   });
+}
+
+// 添加main事件监听者
+function addMainEventListener(action: string, callback: Function) {
+  if (!MainEventListenerMap[action]) {
+    MainEventListenerMap[action] = new Set();
+  }
+  MainEventListenerMap[action].add(callback);
+  return () => {
+    MainEventListenerMap[action].delete(callback);
+  };
+}
+
+// 移除main事件监听者
+function removeMainEventListener(action: string, callback: Function) {
+  if (MainEventListenerMap[action]) {
+    MainEventListenerMap[action].delete(callback);
+  }
 }
 
 function _initEventListener() {
@@ -68,4 +91,6 @@ export default {
   ipcRun,
   ipcWatch,
   listenMainEmit,
+  addMainEventListener,
+  removeMainEventListener,
 };
