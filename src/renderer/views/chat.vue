@@ -212,7 +212,7 @@ const fetchBotResponse = async (message: string): Promise<string> => {
 </script>
 
 <style scoped lang="scss">
-@import 'highlight.js/styles/github.css';
+// @import 'highlight.js/styles/github.css';
 .chat-container {
   position: relative;
   display: flex;

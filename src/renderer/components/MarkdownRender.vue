@@ -19,8 +19,18 @@ const props = defineProps({
 // 创建 markdown-it 实例
 const markdownParser = new MarkdownIt({
   highlight: function (str, lang) {
-    if ((lang = 'vue')) {
+    if (['bash'].includes(lang)) {
+      lang = 'powershell';
+    }
+    if (['vue'].includes(lang)) {
       lang = 'xml';
+    }
+    if (['jsx'].includes(lang)) {
+      lang = 'typescript';
+    }
+    if (lang === 'vue<script>') {
+      lang = 'xml';
+      str = '<script>\n' + str;
     }
     if (lang && hljs.getLanguage(lang)) {
       try {

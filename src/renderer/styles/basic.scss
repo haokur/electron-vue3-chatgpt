@@ -31,8 +31,12 @@
   font-family: 'PingFang SC';
   line-height: 1.6;
   line-height: 1.8;
-  > p {
+  > p,
+  > * {
     padding: 0 20px;
+  }
+  > code {
+    padding: 0;
   }
   ol,
   ul {
@@ -44,6 +48,13 @@
     color: #0d0d0d;
     background-color: #ececec;
     border-radius: 4px;
+  }
+  .hljs code {
+    margin: 0;
+    padding: 0;
+    background-color: none;
+    border-radius: 0;
+    color: auto;
   }
   pre code {
     background-color: transparent;
@@ -58,11 +69,11 @@
     box-sizing: border-box;
     margin: 8px 0;
     padding: 16px 20px;
+    overflow-x: scroll;
     font-size: 14px;
     font-family: 'Monaco';
     line-height: 1.4;
     background-color: #f6f6f6;
-    overflow-x: scroll;
     scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none; /* Chrome, Safari, Opera */
