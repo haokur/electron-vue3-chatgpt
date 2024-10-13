@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, Tray } from 'electron';
+import { app, BrowserWindow, Menu, screen, Tray } from 'electron';
 import path from 'node:path';
 import { menubar } from 'menubar';
 const { autoUpdater } = require('electron-updater');
@@ -10,10 +10,27 @@ const AppPath = app.getAppPath();
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 function createWindow() {
-  // Create the browser window.
+  // const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
+  // 获取主屏幕的完整尺寸（包含任务栏等）
+  const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().bounds;
+
+  // 设置窗口的宽度和高度
+  const windowWidth = 400; // 你可以根据需要设置窗口的宽度
+  const windowHeight = screenHeight; // 高度设为屏幕高度
+
+  // 计算窗口的 x 坐标，让窗口贴在屏幕右侧
+  const x = screenWidth - windowWidth;
+  console.log(screenWidth, windowWidth, x, 'main.ts::23行');
+
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: windowWidth,
+    height: windowHeight,
+    x: x,
+    y: 0, // 如果不设置y，x不会生效
+    // titleBarStyle: 'hidden', // 隐藏标题栏，这里与frame为false冲突
+    // show: false, // 初始时不显示窗口
+    frame: false, // 去掉顶部的关闭、放大、缩小、全屏按钮
+    alwaysOnTop: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       devTools: isDevelopment,

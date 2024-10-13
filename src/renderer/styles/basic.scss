@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* 自定义滚动条的宽度 */
+::-webkit-scrollbar {
+  width: 2px; /* 滚动条的宽度 */
+  height: 2px; /* 对于水平滚动条，滚动条的高度 */
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+  //   background: #f1f1f1; /* 轨道背景色 */
+  background: transparent; /* 轨道背景色 */
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  background: #888; /* 滑块的颜色 */
+  //   background-color: #4caf50;
+  border-radius: 2px; /* 滑块圆角 */
+}
+
+/* 当用户悬停在滑块上时的颜色变化 */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 悬停时滑块的颜色 */
+}
+
+.markdown {
+  font-family: 'PingFang SC';
+  line-height: 1.6;
+  h3 {
+    margin: 6px 0;
+  }
+  div > * {
+    padding: 0 20px;
+  }
+  div > pre {
+    margin: 1em 0;
+    padding: 0;
+    line-height: 1.4;
+  }
+  ol,
+  ul {
+    padding-left: 36px;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  code {
+    color: #0d0d0d;
+    background-color: #ececec;
+    padding: 6px 4px;
+    border-radius: 4px;
+  }
+  .hljs {
+    padding: 1em 20px;
+    font-family: 'Monaco';
+    background-color: #f6f6f6;
+    scrollbar-width: none;
+    line-height: 1.4;
+    font-size: 14px;
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+  }
+}

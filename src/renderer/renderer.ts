@@ -9,6 +9,8 @@ import router from './routers/router';
 import ipcHelperUtil from './utils/ipc-helper.util';
 import { bindKeyboardEvent } from './events/keyboard.handler';
 
+import "./styles/basic.scss"
+
 const app = createApp(App);
 app.use(router).use(ElementPlus, {
   locale: zhCn,
