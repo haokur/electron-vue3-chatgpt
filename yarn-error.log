@@ -1,0 +1,76 @@
+Arguments: 
+  /Users/haokur/.nvm/versions/node/v16.18.1/bin/node /usr/local/bin/yarn add @types/element-plus --save-dev
+
+PATH: 
+  /Users/haokur/.nvm/versions/node/v16.18.1/bin:/usr/local/ffmpeg/:/usr/local/bin/node/:/usr/local/bin/python3/:/Library/Frameworks/Python.framework/Versions/3.12/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/GPAC.app/Contents/MacOS/:/Applications/VMware Fusion.app/Contents/Public:/usr/local/go/bin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Users/haokur/.nvm/versions/node/v16.18.1/bin:/usr/local/ffmpeg/:/usr/local/bin/node/:/usr/local/bin/python3/:/Library/Frameworks/Python.framework/Versions/3.12/bin:/Users/haokur/.cargo/bin:/Users/haokur/goWorkEnv/bin:/usr/local/bin:/Users/haokur/goWorkEnv/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.18.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.npmmirror.com/@types%2felement-plus: Not found
+      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66145:18)
+      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140890:22)
+      at Request.emit (node:events:513:28)
+      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141862:10)
+      at Request.emit (node:events:513:28)
+      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141784:12)
+      at Object.onceWrapper (node:events:627:28)
+      at IncomingMessage.emit (node:events:525:35)
+      at endReadableNT (node:internal/streams/readable:1358:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "electron-starter",
+    "version": "1.0.0",
+    "description": "",
+    "main": "build/main/main.js",
+    "scripts": {
+      "start": "npm run dev",
+      "dev": "node scripts/dev-server.js",
+      "build": "node scripts/build.js && electron-builder"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "mousetrap": "^1.6.5",
+      "electron-updater": "^6.2.1",
+      "menubar": "^9.5.0",
+      "uuid": "^10.0.0",
+      "pinia": "^2.1.7",
+      "element-plus": "^2.7.6",
+      "vue-router": "^4.0.13",
+      "vue": "^3.4.31"
+    },
+    "devDependencies": {
+      "@types/menubar": "^6.0.1",
+      "@types/uuid": "^10.0.0",
+      "@types/vue-router": "^2.0.0",
+      "@electron/fuses": "^1.8.0",
+      "@types/glob": "^8.1.0",
+      "@vitejs/plugin-vue": "^5.0.5",
+      "@vitejs/plugin-vue-jsx": "^4.0.0",
+      "cross-env": "^7.0.3",
+      "electron": "^31.1.0",
+      "electron-builder": "^24.13.3",
+      "glob": "^11.0.0",
+      "typescript": "^5.5.3",
+      "vite": "^5.3.2",
+      "vite-plugin-copy": "^0.1.6",
+      "vite-plugin-static-copy": "^1.0.6"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

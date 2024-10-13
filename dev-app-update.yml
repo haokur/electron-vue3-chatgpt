@@ -1,0 +1,15 @@
+version: 1.0.0
+files:
+  - url: electron-starter-1.0.0-mac.zip
+    sha512: a+u7/T8ZxJwwgyP9bpOzjCKO7YSxxGvR+i7yceFW7pOktqzezeQh/YW2P1TSIQ0tSBmdjq1c55OiWkn6raQI9g==
+    size: 98390650
+  - url: electron-starter-1.0.0.dmg
+    sha512: Vjgln4YLcW0N7L3PLoUHwYhukRfWwSUDacocb5iyHOD8MhFtNoLjfhjieeNJ91LO3kjUblOlNEWAFYiTyXZ0vw==
+    size: 101587371
+path: electron-starter-1.0.0-mac.zip
+sha512: a+u7/T8ZxJwwgyP9bpOzjCKO7YSxxGvR+i7yceFW7pOktqzezeQh/YW2P1TSIQ0tSBmdjq1c55OiWkn6raQI9g==
+releaseDate: '2024-07-02T08:04:56.996Z'
+provider: generic
+url: https://static.haokur.com/electron-app/
+updaterCacheDirName: my-cache-dir
+autoDownload: false
