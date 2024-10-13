@@ -77,7 +77,16 @@ function createWindow() {
       label: '设置',
       type: 'normal',
       click: () => {
-        electronUtil.sendMessage2MainRender('goSettingPage', null, mainWindow);
+        electronUtil.sendMessage2MainRender('goPage', { path: '/chat-setting' }, mainWindow);
+        mainWindow.show();
+      },
+    },
+    {
+      label: '历史记录',
+      type: 'normal',
+      click: () => {
+        electronUtil.sendMessage2MainRender('goPage', { path: '/chat-history' }, mainWindow);
+        mainWindow.show();
       },
     },
     {

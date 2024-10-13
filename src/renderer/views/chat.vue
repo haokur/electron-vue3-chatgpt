@@ -1,6 +1,13 @@
 <template>
   <div class="chat-container" ref="ChatBoxRef" @scroll="handleChatBoxScroll">
     <div class="chat-box">
+      <div v-if="!messages.length" class="chat-box__tip">
+        <h4 class="title">👏🏻欢迎使用！在下方输入框输入提问</h4>
+        <div class="item"><code>alt+c</code>配置页</div>
+        <div class="item"><code>alt+h</code>首页</div>
+        <div class="item"><code>alt+/</code>聊天列表页</div>
+        <div class="item"><code>alt+.</code>切换主窗口显示隐藏（全局快捷键）</div>
+      </div>
       <div
         class="message"
         v-for="msg in messages"
@@ -39,8 +46,12 @@ import ipcHelperUtil from '../utils/ipc-helper.util';
 import Mousetrap from 'mousetrap';
 import { useChatConfig } from '../hooks/config.hook';
 
-// const apiKey = ref(import.meta.env.VITE_CHAT_API_KEY);
-// const apiBaseUrl = ref(import.meta.env.VITE_CHAT_BASE_URL);
+import { useRoute } from 'vue-router';
+const route = useRoute();
+
+import { useRouter } from 'vue-router';
+import { CommonUtil } from '../utils/common.util';
+const router = useRouter();
 
 const { currentConfig } = useChatConfig();
 const { apiKey, baseUrl } = currentConfig.value;
@@ -89,10 +100,60 @@ const handleChatBoxScroll = () => {
 
 let focusOrBlurRemover: null | Function = null;
 const QuestionTextareaRef = ref();
+const currentChatId = ref('');
+
+const storeCurrentChat = () => {
+  // 新增话题前，将当前话题存入历史记录
+  let chatId = currentChatId.value || generateRandomString(20);
+  let historyList: any[] = [];
+  const localHistoryList = localStorage.getItem('chat_history');
+  if (localHistoryList) {
+    historyList = JSON.parse(localHistoryList);
+  }
+
+  const matchItemIndex = historyList.findIndex((item) => item.id === chatId);
+  if (matchItemIndex !== -1) {
+    historyList[matchItemIndex] = {
+      ...historyList[matchItemIndex],
+      messages: messages.value,
+    };
+  } else {
+    const now = Date.now();
+    historyList.unshift({
+      id: chatId,
+      crateTime: CommonUtil.fmtDate(now),
+      createTimestamp: now,
+      messages: messages.value,
+    });
+  }
+
+  localStorage.setItem('chat_history', JSON.stringify(historyList));
+};
+
 onMounted(() => {
-  const cache = localStorage.getItem('messages');
-  if (cache) {
-    messages.value = JSON.parse(cache);
+  const queryId = route.query.id as string;
+  if (!queryId) {
+    currentChatId.value = generateRandomString(18);
+    router.push({
+      path: '/',
+      query: {
+        id: currentChatId.value,
+      },
+    });
+    return;
+  }
+  if (queryId) {
+    currentChatId.value = queryId;
+    const localHistory = localStorage.getItem('chat_history');
+    if (localHistory) {
+      const list = JSON.parse(localHistory);
+      const matchItem = list.find((item) => item.id === queryId);
+      if (matchItem) {
+        messages.value = matchItem.messages;
+      } else {
+        router.replace('/');
+      }
+    }
   }
 
   // 监听窗体窗口事件
@@ -104,15 +165,32 @@ onMounted(() => {
     }
   });
 
+  nextTick(() => {
+    QuestionTextareaRef.value?.focus();
+  });
+
   Mousetrap.bind('command+n', () => {
     console.log('新增话题', 'chat.vue::123行');
-    messages.value = [];
-    QuestionTextareaRef.value?.focus();
+
+    currentChatId.value = generateRandomString(18);
+    router.push({
+      path: '/',
+      query: {
+        id: currentChatId.value,
+      },
+    });
+    // storeCurrentChat();
+    // currentChatId.value = '';
+    // messages.value = [];
+    // QuestionTextareaRef.value?.focus();
   });
 });
 
 onBeforeUnmount(() => {
   focusOrBlurRemover && focusOrBlurRemover();
+  if (currentChatId.value && messages.value.length) {
+    storeCurrentChat();
+  }
 });
 
 // 用户输入
@@ -230,6 +308,29 @@ const fetchBotResponse = async (message: string): Promise<string> => {
   flex-grow: 1;
   padding: 10px 0;
   // overflow-y: auto;
+
+  &__tip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    .title {
+      margin-bottom: 12px;
+    }
+    .item {
+      margin-bottom: 8px;
+      color: #666;
+      font-size: 14px;
+      code {
+        margin-right: 4px;
+        padding: 2px 4px;
+        color: #0d0d0d;
+        background-color: #ececec;
+        border-radius: 4px;
+      }
+    }
+  }
 }
 
 .message {

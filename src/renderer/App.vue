@@ -13,12 +13,18 @@ const router = useRouter();
 import Mousetrap from 'mousetrap';
 
 onMounted(() => {
-  ipcHelperUtil.addMainEventListener('goSettingPage', () => {
-    router.push({ path: '/chat-setting' });
+  ipcHelperUtil.addMainEventListener('goPage', ({ path }) => {
+    router.push({ path });
   });
 
-  Mousetrap.bind('alt+,', () => {
+  Mousetrap.bind('alt+c', () => {
     router.push({ path: '/chat-setting' });
+  });
+  Mousetrap.bind('alt+/', () => {
+    router.push({ path: '/chat-history' });
+  });
+  Mousetrap.bind('alt+h', () => {
+    router.push({ path: '/' });
   });
 });
 </script>

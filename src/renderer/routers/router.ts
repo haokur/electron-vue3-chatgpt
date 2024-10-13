@@ -14,6 +14,11 @@ const routes = [
     name: 'ChatSetting',
     component: () => import('../views/chat-setting.vue'),
   },
+  {
+    path: '/chat-history',
+    name: 'ChatHistory',
+    component: () => import('../views/chat-history.vue'),
+  },
 ];
 
 const router = createRouter({
